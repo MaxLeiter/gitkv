@@ -4,20 +4,20 @@
   "description": "",
   "main": "./dist/cjs/index.js",
   "scripts": {
-    "test": "vitest",
-    "dev": "tsc --watch",
-    "build": "tsc",
+    "test": "vitest run --exclude e2e",
+    "test:e2e": "vitest run --include e2e",
     "prettier:format": "prettier --write .",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "build": "rm -rf dist && bunchee"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "MaxLeiter",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.25",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^7.1.1",
-    "bunchee": "^4.4.8",
+    "bunchee": "5.0.0-beta.2",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

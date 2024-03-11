@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     es2021: true,
   },
   extends: ["standard-with-typescript", "plugin:react/recommended", "prettier"],
@@ -25,5 +24,6 @@ module.exports = {
     "@typescript-eslint/semi": "off",
     "@typescript-eslint/quotes": ["error", "double"],
     "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-misused-promises": "off",
   },
 };

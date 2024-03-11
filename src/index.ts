@@ -1,3 +1,2 @@
-export function main(): void {
-  console.log("Hello world!");
-}
+export { GithubProvider } from "./providers/github";
+export { GitDBError } from "./lib/git-db-error";

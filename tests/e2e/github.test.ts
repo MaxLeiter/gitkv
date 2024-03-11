@@ -6,7 +6,7 @@ import { createGithubBranch, removeGithubBranch } from "@/lib/github";
 
 const githubConfig = {
   personalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN ?? "",
-  repo: "maxleiter.com",
+  repo: "git-db",
   owner: "maxleiter",
   branch: "test-branch",
 };
@@ -16,13 +16,17 @@ const octokit = provider.getOctokit();
 
 // This could be any setup logic for your tests
 beforeAll(async () => {
-  await createGithubBranch({
-    branch: githubConfig.branch,
-    owner: githubConfig.owner,
-    repo: githubConfig.repo,
-    octokit,
-    rootBranch: "master",
-  });
+  try {
+    await createGithubBranch({
+      branch: githubConfig.branch,
+      owner: githubConfig.owner,
+      repo: githubConfig.repo,
+      octokit,
+      rootBranch: "master",
+    });
+  } catch (e) {
+    console.warn(e);
+  }
 });
 
 afterAll(async () => {
@@ -54,7 +58,7 @@ describe("GithubProvider Integration Test", () => {
     expect(commit).toHaveProperty("message", "Test commit");
   });
 
-  it("supports multiple commits + can fetch", async () => {
+  it("supports pushing multiple commits", async () => {
     provider.add(
       path.join(__dirname, "mockData", "testFile.json"),
       JSON.stringify({ test: "data" }),
@@ -81,7 +85,9 @@ describe("GithubProvider Integration Test", () => {
       JSON.stringify(commit2, null, 2),
       "utf-8",
     );
+  });
 
+  it("can fetch file paths", async () => {
     expect(
       await provider.get(path.join(__dirname, "mockData", "testFile.json")),
     ).toBe(JSON.stringify({ test: "data" }));
