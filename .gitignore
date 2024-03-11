@@ -1,0 +1,7 @@
+#.gitignore
+node_modules/
+.DS_Store
+dist/
+.env.local
+.env
+package/

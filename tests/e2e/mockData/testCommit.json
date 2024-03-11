@@ -1,0 +1,10 @@
+{
+  "message": "Test commit",
+  "changes": [
+    {
+      "path": "/Users/maxleiter_1/Documents/git-db/tests/e2e/mockData/testFile.json",
+      "data": "{\"test\":\"data\"}"
+    }
+  ],
+  "timestamp": 1710140170944
+}
