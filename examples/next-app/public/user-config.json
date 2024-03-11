@@ -1,1 +1,3 @@
-tests
+{
+    "requestsPerSecond": 1
+}
