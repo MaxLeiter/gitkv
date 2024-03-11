@@ -1,9 +1,8 @@
 # gitkv
 
-This is a key-value based "database" library that uses Git for the underlying storage. It provides a get/set interface for storing and retrieving data using hosted on GitHub. Other providers can be added in the future. This is useful in scenarios where your data will be deployed / accessible from high-speed
-data sources, but you don't care about your write latency.
+This is a key-value based "database" library that uses Git for the underlying storage. It provides a get/set interface for storing and retrieving data using hosted on GitHub. Other providers can be added in the future. This is useful in scenarios where you don't really care about your write frequency or latency, and your repository (or files in it) are deployed to something like a CDN or [Vercel Edge Config](https://vercel.com/docs/storage/edge-config). 
 
-Inspired by [this @cramforce tweet](https://twitter.com/cramforce/status/1441060730730734593). I don't necessarily recommend using this in production.
+Inspired by [this @cramforce tweet](https://twitter.com/cramforce/status/1766656925809381772). I don't necessarily recommend using this in production.
 Mostly written by [claude-3-opus](https://www.anthropic.com/news/claude-3-family).
 
 ## Features
@@ -12,7 +11,6 @@ Mostly written by [claude-3-opus](https://www.anthropic.com/news/claude-3-family
 - Automatically commit and push changes to a GitHub repository
 - Create and manage branches for organizing data
 - Open pull requests programmatically
-- Retrieve file contents from the repository
 
 ## Installation
 
@@ -36,6 +34,7 @@ Then create an instance of the `GithubProvider`:
 
 ```typescript
 const config = {
+  // You should probably read this from environment variables 
   personalAccessToken: "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN",
   repo: "YOUR_REPOSITORY_NAME",
   branch: "BRANCH_NAME", // Optional, defaults to 'main'
@@ -68,7 +67,8 @@ const path = "path/to/your/key";
 const value = await provider.get(path);
 ```
 
-You likely want to implement some caching around your `get` calls, as this will be slow.
+You likely want to never use this, or implement some heavy caching around your `get` calls. 
+Ideally the files you're writing are deployed somewhere you're supposed to read files from programatically. 
 
 ### Staging Changes
 

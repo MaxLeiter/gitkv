@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
 import { GithubProvider } from "./github";
-import { Octokit } from "@octokit/core";
 import { GitKVError } from "../lib/git-db-error";
 import {
   getLatestCommit,
