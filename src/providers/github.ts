@@ -10,6 +10,7 @@ import {
 } from "@/lib/github";
 import { GitKVError } from "../lib/git-db-error";
 import { Octokit } from "@octokit/core";
+import { retry } from "@octokit/plugin-retry";
 import type { Change, Commit, IKVDBProvider } from "@/types";
 
 interface GithubConfig {
@@ -19,6 +20,8 @@ interface GithubConfig {
   owner: string;
 }
 
+const OctokitWithRetries = Octokit.plugin(retry);
+
 export class GithubProvider implements IKVDBProvider {
   private readonly config: GithubConfig;
   private readonly octokit: Octokit;
@@ -27,7 +30,7 @@ export class GithubProvider implements IKVDBProvider {
 
   constructor(config: GithubConfig) {
     this.config = config;
-    this.octokit = new Octokit({
+    this.octokit = new OctokitWithRetries({
       auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
     });
   }
@@ -108,7 +111,10 @@ export class GithubProvider implements IKVDBProvider {
         await updateBranchRef(this.octokit, owner, repo, branch, newCommit.sha);
       }
     } catch (e) {
-      throw new GitKVError(`Failed to push: ${e.message}`, e.stack);
+      throw new GitKVError(
+        `Failed to push: ${e.message}`,
+        e instanceof Error ? e.stack : undefined,
+      );
     }
 
     const stagedCommitsCount = this.stagedCommits.length;
